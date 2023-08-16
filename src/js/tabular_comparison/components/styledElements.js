@@ -1,6 +1,5 @@
 import { styled } from '@mui/system';
 import Button from '@mui/material/Button';
-import SliderUnstyled, { sliderUnstyledClasses } from '@mui/base/SliderUnstyled';
 
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';

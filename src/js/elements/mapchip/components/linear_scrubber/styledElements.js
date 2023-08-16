@@ -1,5 +1,5 @@
 import { styled } from '@mui/system';
-import SliderUnstyled, { sliderUnstyledClasses } from '@mui/base/SliderUnstyled';
+import Slider, { sliderClasses } from '@mui/base/Slider';
 
 export const ParentContainer = styled('div')(({ theme }) => ({
   padding: "15px 10px",
@@ -13,7 +13,7 @@ export const CustomSliderRail = styled('div')(({ theme }) => ({
   borderRadius: "10px"
 }));
 
-export const StyledSlider = styled(SliderUnstyled)(
+export const StyledSlider = styled(sliderClasses)(
   ({ theme }) => `
   color: ${theme.palette.grey[500]};
   height: 4px;
