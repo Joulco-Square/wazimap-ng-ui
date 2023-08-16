@@ -1,12 +1,24 @@
-\.*.sw[op]
+# Folders
 node_modules
 dist
+
+# Cache
+__pycache__
 .cache
+.parcel-cache
+
+# Node Lock Files
+package-lock.json
+yarn.lock
+
+## Logs
 yarn-error.log
+
+# Other
+\.*.sw[op]
 *.sublime-workspace
 .env
 .idea
-__pycache__
 .DS_Store
 .idea/
 *.override.yml
