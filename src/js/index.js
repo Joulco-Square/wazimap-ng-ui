@@ -7,15 +7,9 @@ import {API} from './api';
 import * as Sentry from '@sentry/browser';
 import {getHostname, getAPIUrl, loadDevTools} from './utils';
 import {ErrorNotifier} from "./error-notifier";
-
-const mainUrl = getAPIUrl('https://staging.wazimap-ng.openup.org.za');
-const productionUrl = getAPIUrl('https://production.wazimap-ng.openup.org.za');
-let config = new SAConfig();
+import {getProfile} from './configurations/profiles'
 
 let hostname = getHostname();
-const defaultProfile = 8;
-const defaultUrl = productionUrl;
-const defaultConfig = new SAConfig();
 
 const ENVIRONMENT = `${process.env.ENVIRONMENT}`;
 const GOOGLE_ANALYTICS_ID = `${process.env.GOOGLE_ANALYTICS_ID}`;
@@ -30,84 +24,14 @@ if (SENTRY_DSN !== "undefined" && SENTRY_DSN !== "") {
     console.warn("Not initialising Sentry because SENTRY_DSN is not set");
 }
 
-const profiles = {
-    'wazi.webflow.io': {
-        baseUrl: mainUrl,
-        config: config
-    },
-    'localhost': {
-        baseUrl: mainUrl,
-        config: config
-    },
-    'localhost-dev': {
-        baseUrl: 'http://localhost:8000',
-        config: config
-    },
-    'geo.vulekamali.gov.za': {
-        baseUrl: productionUrl,
-        config: config
-    },
-    'beta.youthexplorer.org.za': {
-        baseUrl: productionUrl,
-        config: config
-    },
-    'capetownagainstcovid19.openup.org.za': {
-        baseUrl: mainUrl,
-        config: config
-    },
-    'covid-wazi.openup.org.za': {
-        baseUrl: productionUrl,
-        config: config
-    },
-    'wazimap-ng.africa': {
-        baseUrl: mainUrl,
-        config: config
-    },
-    'covid-ibp.openup.org.za': {
-        baseUrl: productionUrl,
-        config: config
-    },
-    'sifar-wazi.openup.org.za': {
-        baseUrl: productionUrl,
-        config: config
-    },
-    'mapyourcity.org.za': {
-        baseUrl: productionUrl,
-        config: config
-    },
-    'giz-projects.openup.org.za': {
-        baseUrl: productionUrl,
-        config: config
-    },
-    'covid-ccij.openup.org.za': {
-        baseUrl: mainUrl,
-        config: config
-    },
-    'cfafrica.wazimap-ng.africa': {
-        baseUrl: 'https://api.cfafrica.wazimap-ng.africa',
-        config: config
-    },
-    'ccij-water.openup.org.za': {
-        baseUrl: productionUrl,
-        config: config
-    }
-}
-
 async function init() {
-    let pc = profiles[hostname]
-    if (pc == undefined) {
-        pc = {
-            profile: defaultProfile,
-            baseUrl: defaultUrl,
-            config: defaultConfig
-        }
-    }
+    let pc = getProfile(hostname)
 
     const errorNotifier = new ErrorNotifier();
     errorNotifier.registerErrorHandler();
 
     const api = new API(pc.baseUrl, pc.config);
-    const data = await api.getProfileConfiguration(hostname);
+    const data = await api.getProfileConfiguration(pc.hostname);
 
     pc.config.setConfig(data.configuration || {})
     pc.config.setVersions(data.geography_hierarchy || {})
